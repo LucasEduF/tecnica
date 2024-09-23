@@ -1,0 +1,140 @@
+1) Observe o trecho de código abaixo: int INDICE = 13, SOMA = 0, K = 0; Enquanto K < INDICE faça { K = K + 1; SOMA = SOMA + K; } Imprimir(SOMA); Ao final do processamento, qual será o valor da variável SOMA?
+
+(python)
+indice = 13
+soma = 0
+K = 0
+
+while K < indice:
+  K=K+1
+  soma=soma+K
+  print(soma)
+
+
+2) Dado a sequência de Fibonacci, onde se inicia por 0 e 1 e o próximo valor sempre será a soma dos 2 valores anteriores (exemplo: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34...), 
+escreva um programa na linguagem que desejar onde, informado um número, ele calcule a sequência de Fibonacci e retorne uma mensagem avisando se o número informado pertence ou não a sequência.
+
+(python)
+def fibonacci(n):
+    fib_sequence = [0, 1]
+    while True:
+        next_value = fib_sequence[-1] + fib_sequence[-2]
+        if next_value > n:
+            break
+        fib_sequence.append(next_value)
+    return fib_sequence
+
+def pertence_fibonacci(num):
+    fib_sequence = fibonacci(num)
+    if num in fib_sequence:
+        return f"O número {num} pertence à sequência de Fibonacci."
+    else:
+        return f"O número {num} NÃO pertence à sequência de Fibonacci."
+
+numero_informado = int(input("Informe um número: "))
+resultado = pertence_fibonacci(numero_informado)
+print(resultado)
+
+
+3) Dado um vetor que guarda o valor de faturamento diário de uma distribuidora, faça um programa, na linguagem que desejar, que calcule e retorne:
+• O menor valor de faturamento ocorrido em um dia do mês;
+• O maior valor de faturamento ocorrido em um dia do mês;
+• Número de dias no mês em que o valor de faturamento diário foi superior à média mensal.
+
+IMPORTANTE:
+a) Usar o json ou xml disponível como fonte dos dados do faturamento mensal;
+b) Podem existir dias sem faturamento, como nos finais de semana e feriados. Estes dias devem ser ignorados no cálculo da média;
+
+(json)
+{
+    "faturamento_diario": [
+        {"dia": 1, "valor": 100},
+        {"dia": 2, "valor": 200},
+        {"dia": 3, "valor": 0},
+        {"dia": 4, "valor": 150},
+        {"dia": 5, "valor": 300},
+        {"dia": 6, "valor": 0},
+        {"dia": 7, "valor": 400},
+        {"dia": 8, "valor": 0},
+        {"dia": 9, "valor": 250},
+        {"dia": 10, "valor": 0}
+    ]
+}
+
+(python)
+import json
+
+def carregar_faturamento(arquivo):
+    with open(arquivo, 'r') as file:
+        return json.load(file)
+
+def calcular_faturamento(faturamento_diario):
+    valores = [f['valor'] for f in faturamento_diario if f['valor'] > 0]
+    
+    if not valores:
+        return None, None, 0  # Sem faturamento
+
+    menor = min(valores)
+    maior = max(valores)
+    media = sum(valores) / len(valores)
+
+    dias_superior_media = sum(1 for valor in valores if valor > media)
+
+    return menor, maior, dias_superior_media
+
+faturamento = carregar_faturamento('faturamento.json')
+faturamento_diario = faturamento['faturamento_diario']
+
+menor, maior, dias_superior_media = calcular_faturamento(faturamento_diario)
+
+if menor is not None:
+    print(f"Menor faturamento: R$ {menor}")
+    print(f"Maior faturamento: R$ {maior}")
+    print(f"Número de dias com faturamento superior à média: {dias_superior_media}")
+else:
+    print("Não há faturamento disponível.")
+
+4) Dado o valor de faturamento mensal de uma distribuidora, detalhado por estado:
+• SP – R$67.836,43
+• RJ – R$36.678,66
+• MG – R$29.229,88
+• ES – R$27.165,48
+• Outros – R$19.849,53
+
+Escreva um programa na linguagem que desejar onde calcule o percentual de representação que cada estado teve dentro do valor total mensal da distribuidora. 
+
+(python)
+faturamento = {
+    'SP': 67836.43,
+    'RJ': 36678.66,
+    'MG': 29229.88,
+    'ES': 27165.48,
+    'Outros': 19849.53
+}
+
+faturamento_total = sum(faturamento.values())
+
+percentuais = {estado: (valor / faturamento_total) * 100 for estado, valor in faturamento.items()}
+
+print("Percentual de representação por estado:")
+for estado, percentual in percentuais.items():
+    print(f"{estado}: {percentual:.2f}%")
+
+5) Escreva um programa que inverta os caracteres de um string.
+
+IMPORTANTE:
+a) Essa string pode ser informada através de qualquer entrada de sua preferência ou pode ser previamente definida no código;
+b) Evite usar funções prontas, como, por exemplo, reverse;
+
+(python)
+def inverter_string(s):
+    string_invertida = ""
+    for char in s:
+        string_invertida = char + string_invertida  # Adiciona o caractere no início da nova string
+    return string_invertida
+
+entrada = input("Informe uma string: ")
+
+resultado = inverter_string(entrada)
+
+print(f"String invertida: {resultado}")
